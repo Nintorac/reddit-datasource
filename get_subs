@@ -1,0 +1,22 @@
+#!pytjon env
+#%%
+## quick and dirty
+import urllib
+import re
+from tqdm import tqdm
+subs = set()
+for index in tqdm(range(40)):
+    path = f"http://redditlist.com?page={index}"
+    page = urllib.request.urlopen(path).read().decode()
+    new_subs = filter(lambda x: '/r/' in x, re.findall(r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)", page))
+    subs = subs.union(set(new_subs))
+# %%
+
+
+with open('subreddits', 'w'
+) as f:
+    f.writelines(map(lambda x: f"{x.split('/')[-1]}\n", sorted(subs)))
+
+
+# %%
+#
